@@ -1,4 +1,5 @@
 let h, w;
+
 let oder = [0,1,2,3];
 
 let locCircle;
@@ -27,6 +28,7 @@ let xSquare;
 let xTriangle1;
 let xTriangle2;
 let xTriangle3;
+
 function setup() {
   h = windowHeight, w = windowWidth;
   createCanvas(w, h);
@@ -36,7 +38,7 @@ function setup() {
   hRec = h - 2 * borderH;
   wDis = wRec / 4;
   hDis = hRec / 2;
-  
+
   y1 = borderH + hDis / 2 - sW /2;
   y2 = y1 + sW / 2;
   y3 = y2 + sW / 2;
@@ -130,8 +132,6 @@ function check(){
     line(0, y4, w, y4);
     line(0, y5, w, y5);
     line(0, y6, w, y6);
-  
-
 }
 
 function draw() {
