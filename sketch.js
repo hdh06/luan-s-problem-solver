@@ -1,6 +1,12 @@
 let h, w;
-let where = [0,1,2,3];
-var i;
+
+let oder = [0,1,2,3];
+
+let locCircle;
+let locSquare;
+let locTriangle;
+let locInvertedTriangle;
+
 let borderW;
 let borderH;
 let wRec;
@@ -15,13 +21,14 @@ let y4;
 let y5;
 let y6;
 
-let shapeWidth;
+let sW = 130;//shapeWidth
 
 let xCircle;
 let xSquare;
-let xTrianglePoint1;
-let xTrianglePoint2;
-let xTrianglePoint3;
+let xTriangle1;
+let xTriangle2;
+let xTriangle3;
+
 function setup() {
   h = windowHeight, w = windowWidth;
   createCanvas(w, h);
@@ -31,21 +38,57 @@ function setup() {
   hRec = h - 2 * borderH;
   wDis = wRec / 4;
   hDis = hRec / 2;
+
+  y1 = borderH + hDis / 2 - sW /2;
+  y2 = y1 + sW / 2;
+  y3 = y2 + sW / 2;
+  y6 = h - (borderH + hDis / 2 - sW /2);
+  y5 = y6 - sW / 2;
+  y4 = y5 - sW / 2;
   
-  y1 = borderH + hDis / 2 - 130 /2;
-  y2 = y1 + 130 / 2;
-  y3 = y2 + 130 / 2;
-  y6 = h - (borderH + hDis / 2 - 130 /2);
-  y5 = y6 - 130 / 2;
-  y4 = y5 - 130 / 2;
+  oder1 = shuffle(oder);
+  oder2 = shuffle(oder);
   
+}
+
+function randomLocation1(){
+    
+  locCircle = oder1[0];
+  locSquare = oder1[1];
+  locTriangle = oder1[2];
+  locInvertedTriangle = oder1[3];
   
-  xCircle = borderW + wDis / 2;
-  xSquare = xCircle + wDis - 130 /2;
-  xTrianglePoint1 = xCircle + 2 * wDis;
-  xTrianglePoint2 = xSquare +  wDis;
-  xTrianglePoint3 = xTrianglePoint2 + 130;
+  xCircle = borderW + wDis / 2 + locCircle * wDis;
   
+  xSquare = borderW + wDis / 2 - sW /2 + locSquare * wDis;
+  
+  xTriangle1 = borderW + wDis / 2 + locTriangle * wDis;
+  xTriangle2 = borderW + wDis / 2 - sW /2 + locTriangle * wDis;
+  xTriangle3 = borderW + wDis / 2 - sW /2 + sW + locTriangle * wDis;
+  
+  xInvertedTriangle1 = borderW + wDis / 2 + locInvertedTriangle * wDis;
+  xInvertedTriangle2 = borderW + wDis / 2 - sW /2 + locInvertedTriangle * wDis;
+  xInvertedTriangle3 = borderW + wDis / 2 - sW /2 + sW + locInvertedTriangle * wDis;
+}
+
+function randomLocation2(){
+    
+  locCircle = oder2[0];
+  locSquare = oder2[1];
+  locTriangle = oder2[2];
+  locInvertedTriangle = oder2[3];
+  
+  xCircle = borderW + wDis / 2 + locCircle * wDis;
+  
+  xSquare = borderW + wDis / 2 - sW /2 + locSquare * wDis;
+  
+  xTriangle1 = borderW + wDis / 2 + locTriangle * wDis;
+  xTriangle2 = borderW + wDis / 2 - sW /2 + locTriangle * wDis;
+  xTriangle3 = borderW + wDis / 2 - sW /2 + sW + locTriangle * wDis;
+  
+  xInvertedTriangle1 = borderW + wDis / 2 + locInvertedTriangle * wDis;
+  xInvertedTriangle2 = borderW + wDis / 2 - sW /2 + locInvertedTriangle * wDis;
+  xInvertedTriangle3 = borderW + wDis / 2 - sW /2 + sW + locInvertedTriangle * wDis;
 }
 
 function drawPage1(){
@@ -60,33 +103,43 @@ function drawPage1(){
     fill(215,172,99);
     textAlign(CENTER, TOP);
     text("Match the shapes", w/2, 30); //text
-
+}
+function drawShape1(){
     fill("white");
     noStroke();
 
-    circle(xCircle, y2, 130);
-    square(xSquare, y1, 130)
-    triangle(xTrianglePoint1, y1, xTrianglePoint2, y3, xTrianglePoint3, y3);
-    triangle(xTrianglePoint1 + wDis, y3, xTrianglePoint2 +wDis, y1, xTrianglePoint3 + wDis, y1);
+    circle(xCircle, y2, sW);
+    square(xSquare, y1, sW);
+    triangle(xTriangle1, y1, xTriangle2, y3, xTriangle3, y3);
+    triangle(xInvertedTriangle1, y3, xInvertedTriangle2, y1, xInvertedTriangle3, y1);
+}
 
-    circle(xCircle, y5, 130);
-    square(xSquare, y4, 130)
-    triangle(xTrianglePoint1, y4, xTrianglePoint2, y6, xTrianglePoint3, y6);
-    triangle(xTrianglePoint1 + wDis, y6, xTrianglePoint2 +wDis, y4, xTrianglePoint3 + wDis, y4);
+function drawShape2(){
+    fill("white");
+    noStroke();
   
-    // stroke("red");
-    // line(0, y1, w, y1);
-    // line(0, y2, w, y2);
-    // line(0, y3, w, y3);
-    // line(0, y4, w, y4);
-    // line(0, y5, w, y5);
-    // line(0, y6, w, y6);
-  
+    circle(xCircle, y5, sW);
+    square(xSquare, y4, sW);
+    triangle(xTriangle1, y4, xTriangle2, y6, xTriangle3, y6);
+    triangle(xInvertedTriangle1, y6, xInvertedTriangle2, y4, xInvertedTriangle3, y4);
+}
 
+function check(){  
+    stroke("red");
+    line(0, y1, w, y1);
+    line(0, y2, w, y2);
+    line(0, y3, w, y3);
+    line(0, y4, w, y4);
+    line(0, y5, w, y5);
+    line(0, y6, w, y6);
 }
 
 function draw() {
   background(146, 216, 212);
 
   drawPage1();
+  randomLocation1();
+  drawShape1();
+  randomLocation2();
+  drawShape2();
 }
