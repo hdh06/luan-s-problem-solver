@@ -1,145 +1,132 @@
 let h, w;
 
-let oder = [0,1,2,3];
+let backgroundColor = [146, 216, 212]
+let strokeColor = [215, 172, 99]
 
-let locCircle;
-let locSquare;
-let locTriangle;
-let locInvertedTriangle;
+class Shape{
+  constructor(x, y, len, type){//type: 0 is square, 1 is circle, 2 is triangle, 3 is star
+    this.x = x;
+    this.y = y;
+    this.len = len;
+    this.type = type;
+  }
 
-let borderW;
-let borderH;
-let wRec;
-let hRec;
-let wDis;
-let hDis;
+  drawTriangleCenterAt(x, y, len){
+    let v1 = createVector(0, -len / Math.sqrt(3)); 
+    let v2 = v1.copy();
+    v2.rotate(PI / 3 * 2);
+    let v3 = v1.copy();
+    v3.rotate(-PI / 3 * 2);
+    triangle(x + v1.x, y + v1.y, x + v2.x, y + v2.y, x + v3.x, y + v3.y);
+  }
+  
+  drawStarCenterAt(x, y, len){
+    len /= 1.5;
+    let v1 = createVector(0, -len);
+    let v2 = createVector(0, len / 3);
+    let a = 2 * PI / 5;
+    v2.rotate(a * 3);
+  
+    beginShape();
+    noStroke();
+    for (let i = 0; i < 5; i++){
+      // point(x + v1.x, y + v1.y);
+      // point(x + v2.x, y + v2.y);
+  
+      vertex(x + v1.x, y + v1.y);
+      vertex(x + v2.x, y + v2.y);
+  
+      // console.log(v1.x, v1.y);
+      // console.log(v2.x, v2.y);
+  
+      // points.push(v1);
+      // points.push(v2);
+      
+      v1.rotate(a);
+      v2.rotate(a);
+    }
+  
+    // points.push(v1);
+    // points.push(v2);
+    endShape(CLOSE);
+  
+    // console.log(points);
+  
+    // stroke("white");
+    // strokeWeight(3);
+  }  
 
-let y1;
-let y2;
-let y3;
-let y4;
-let y5;
-let y6;
+  draw(){
+    fill("white");
+    noStroke();
 
-let sW = 130;//shapeWidth
+    switch(this.type){
+      case 0:
+        square(this.x - this.len / 2, this.y - this.len / 2, this.len);
+        break;
+      case 1:
+        circle(this.x, this.y, this.len);
+        break;
+      case 2:
+        this.drawTriangleCenterAt(this.x, this.y, this.len);
+        break;
+      case 3:
+        this.drawStarCenterAt(this.x, this.y, this.len);
+        break;
+      default:
+        break;  
+    }
+  }
+}
 
-let xCircle;
-let xSquare;
-let xTriangle1;
-let xTriangle2;
-let xTriangle3;
+orderUpper = [];
+orderLower = [];
 
-function setup() {
-  h = windowHeight, w = windowWidth;
-  createCanvas(w, h);
+function drawPage1(){
   borderW = 60;
   borderH = 90;
   wRec = w - 2 * borderW;
   hRec = h - 2 * borderH;
-  wDis = wRec / 4;
-  hDis = hRec / 2;
+  shapeWidth = 130;
 
-  y1 = borderH + hDis / 2 - sW /2;
-  y2 = y1 + sW / 2;
-  y3 = y2 + sW / 2;
-  y6 = h - (borderH + hDis / 2 - sW /2);
-  y5 = y6 - sW / 2;
-  y4 = y5 - sW / 2;
+  //frame
+  noFill();
+  stroke(215,172,99);
+  strokeWeight(3);
+
+  rect(borderW, borderH, wRec, hRec);
+
+  //text
+  textSize(50);
+  textFont('Verdana');
+  fill(215,172,99);
+  textAlign(CENTER, TOP);
+  text("Match the shapes", w/2, 30); //text
   
-  oder1 = shuffle(oder);
-  oder2 = shuffle(oder);
-  
+  //draw the shapes
+  let disW = wRec / 4;
+  let disH = hRec / 2;
+  for (let i = 0; i < 4; i++){
+    let s1 = new Shape(borderW + disW / 2 + i * disW, borderH + disH / 2, shapeWidth, orderUpper[i]);
+    let s2 = new Shape(borderW + disW / 2 + i * disW, borderH + disH / 2 + disH, shapeWidth, orderLower[i]);
+
+    s1.draw();
+    s2.draw();
+  }
 }
 
-function randomLocation1(){
-    
-  locCircle = oder1[0];
-  locSquare = oder1[1];
-  locTriangle = oder1[2];
-  locInvertedTriangle = oder1[3];
-  
-  xCircle = borderW + wDis / 2 + locCircle * wDis;
-  
-  xSquare = borderW + wDis / 2 - sW /2 + locSquare * wDis;
-  
-  xTriangle1 = borderW + wDis / 2 + locTriangle * wDis;
-  xTriangle2 = borderW + wDis / 2 - sW /2 + locTriangle * wDis;
-  xTriangle3 = borderW + wDis / 2 - sW /2 + sW + locTriangle * wDis;
-  
-  xInvertedTriangle1 = borderW + wDis / 2 + locInvertedTriangle * wDis;
-  xInvertedTriangle2 = borderW + wDis / 2 - sW /2 + locInvertedTriangle * wDis;
-  xInvertedTriangle3 = borderW + wDis / 2 - sW /2 + sW + locInvertedTriangle * wDis;
+function setup() {
+  h = windowHeight, w = windowWidth;
+  createCanvas(w, h);
+
+  //create shuffle order for Page 1
+  orderUpper = shuffle([0, 1, 2, 3]);
+  orderLower = shuffle([0, 1, 2, 3]);
 }
 
-function randomLocation2(){
-    
-  locCircle = oder2[0];
-  locSquare = oder2[1];
-  locTriangle = oder2[2];
-  locInvertedTriangle = oder2[3];
-  
-  xCircle = borderW + wDis / 2 + locCircle * wDis;
-  
-  xSquare = borderW + wDis / 2 - sW /2 + locSquare * wDis;
-  
-  xTriangle1 = borderW + wDis / 2 + locTriangle * wDis;
-  xTriangle2 = borderW + wDis / 2 - sW /2 + locTriangle * wDis;
-  xTriangle3 = borderW + wDis / 2 - sW /2 + sW + locTriangle * wDis;
-  
-  xInvertedTriangle1 = borderW + wDis / 2 + locInvertedTriangle * wDis;
-  xInvertedTriangle2 = borderW + wDis / 2 - sW /2 + locInvertedTriangle * wDis;
-  xInvertedTriangle3 = borderW + wDis / 2 - sW /2 + sW + locInvertedTriangle * wDis;
-}
-
-function drawPage1(){
-    noFill();
-    stroke(215,172,99);
-    strokeWeight(3);
-
-    rect(borderW, borderH, wRec, hRec); //frame
-
-    textSize(50);
-    textFont('Verdana');
-    fill(215,172,99);
-    textAlign(CENTER, TOP);
-    text("Match the shapes", w/2, 30); //text
-}
-function drawShape1(){
-    fill("white");
-    noStroke();
-
-    circle(xCircle, y2, sW);
-    square(xSquare, y1, sW);
-    triangle(xTriangle1, y1, xTriangle2, y3, xTriangle3, y3);
-    triangle(xInvertedTriangle1, y3, xInvertedTriangle2, y1, xInvertedTriangle3, y1);
-}
-
-function drawShape2(){
-    fill("white");
-    noStroke();
-  
-    circle(xCircle, y5, sW);
-    square(xSquare, y4, sW);
-    triangle(xTriangle1, y4, xTriangle2, y6, xTriangle3, y6);
-    triangle(xInvertedTriangle1, y6, xInvertedTriangle2, y4, xInvertedTriangle3, y4);
-}
-
-function check(){  
-    stroke("red");
-    line(0, y1, w, y1);
-    line(0, y2, w, y2);
-    line(0, y3, w, y3);
-    line(0, y4, w, y4);
-    line(0, y5, w, y5);
-    line(0, y6, w, y6);
-}
+pageNumber = 1;
 
 function draw() {
-  background(146, 216, 212);
-
+  background(backgroundColor[0], backgroundColor[1], backgroundColor[2]);
   drawPage1();
-  randomLocation1();
-  drawShape1();
-  randomLocation2();
-  drawShape2();
 }
