@@ -3,12 +3,17 @@ let h, w;
 let backgroundColor = [146, 216, 212]
 let strokeColor = [215, 172, 99]
 
+currentlyDragging = false;
+
 class Shape{
-  constructor(x, y, len, type){//type: 0 is square, 1 is circle, 2 is triangle, 3 is star
+  constructor(x, y, len, type, canBeDrag, color){//type: 0 is square, 1 is circle, 2 is triangle, 3 is star
     this.x = x;
     this.y = y;
     this.len = len;
     this.type = type;
+    this.dragging = false;
+    this.canBeDrag = canBeDrag;
+    this.color = color;
   }
 
   drawTriangleCenterAt(x, y, len){
@@ -57,8 +62,21 @@ class Shape{
   }  
 
   draw(){
-    fill("white");
+    fill(this.color);
     noStroke();
+
+    if (this.canBeDrag){
+      if (mouseIsPressed == false && this.dragging == true){
+        currentlyDragging = false;
+        this.dragging = false;
+      }
+
+      if (this.dragging){
+        // console.log(true);
+        this.x = mouseX;
+        this.y = mouseY;
+      }
+    }
 
     switch(this.type){
       case 0:
@@ -76,11 +94,24 @@ class Shape{
       default:
         break;  
     }
+
+    if (this.canBeDrag && currentlyDragging == false && mouseIsPressed && dist(this.x, this.y, mouseX, mouseY) < this.len / 2){
+      this.dragging = true;
+      currentlyDragging = true;
+      // console.log(true);
+    }
   }
 }
 
+function drawHomePage(){
+
+}
+
+
 orderUpper = [];
 orderLower = [];
+
+shapes = []
 
 function drawPage1(){
   borderW = 60;
@@ -104,14 +135,34 @@ function drawPage1(){
   text("Match the shapes", w/2, 30); //text
   
   //draw the shapes
-  let disW = wRec / 4;
-  let disH = hRec / 2;
-  for (let i = 0; i < 4; i++){
-    let s1 = new Shape(borderW + disW / 2 + i * disW, borderH + disH / 2, shapeWidth, orderUpper[i]);
-    let s2 = new Shape(borderW + disW / 2 + i * disW, borderH + disH / 2 + disH, shapeWidth, orderLower[i]);
+  for (let i = 4; i < 8; i++)
+    shapes[i].draw();
+  
+  for (let i = 0; i < 4; i++)
+    shapes[i].draw();
 
-    s1.draw();
-    s2.draw();
+  for (let i = 0; i < 4; i++){
+      minIndex = 4;
+      for (let j = 4; j < 8; j++){
+        if (dist(shapes[i].x, shapes[i].y, shapes[j].x, shapes[j].y) < dist(shapes[i].x, shapes[i].y, shapes[minIndex].x, shapes[minIndex].y))
+          minIndex = j;
+      }
+      if (shapes[i].type == shapes[minIndex].type){
+        if (dist(shapes[i].x, shapes[i].y, shapes[minIndex].x, shapes[minIndex].y) <= 30){
+          shapes[i].color = "green";
+          shapes[i].x = shapes[minIndex].x;
+          shapes[i].y = shapes[minIndex].y;
+        }
+        else 
+          shapes[i].color = "white";
+      }
+      else{
+        if (dist(shapes[i].x, shapes[i].y, shapes[minIndex].x, shapes[minIndex].y) <= 30){
+          shapes[i].color = "red";
+        }
+        else 
+          shapes[i].color = "white";
+      }
   }
 }
 
@@ -122,11 +173,55 @@ function setup() {
   //create shuffle order for Page 1
   orderUpper = shuffle([0, 1, 2, 3]);
   orderLower = shuffle([0, 1, 2, 3]);
+
+  //put the shape in original place
+  borderW = 60;
+  borderH = 90;
+  wRec = w - 2 * borderW;
+  hRec = h - 2 * borderH;
+  shapeWidth = 130;
+  let disW = wRec / 4;
+  let disH = hRec / 2;
+  for (let i = 0; i < 4; i++){
+    shapes[i] = new Shape(borderW + disW / 2 + i * disW, borderH + disH / 2, shapeWidth, orderUpper[i], true, "white");
+    shapes[i + 4] = new Shape(borderW + disW / 2 + i * disW, borderH + disH / 2 + disH, shapeWidth, orderLower[i], false, "white");
+  }
 }
 
 pageNumber = 1;
+// x = 100, y = 100;
 
 function draw() {
   background(backgroundColor[0], backgroundColor[1], backgroundColor[2]);
-  drawPage1();
+
+  // stroke("black");
+  // square(x - 50, y - 50, 100);
+
+  // if (mouseIsPressed && mouseX >= x - 50 && mouseX <= x + 50 && mouseY >= y - 50 && mouseY <= y + 50){
+  //   console.log(true);
+  //   x = mouseX;
+  //   y = mouseY;
+  // }
+
+
+  switch(pageNumber){
+    case 0:
+      drawHomePage();
+      break;
+    case 1:
+      drawPage1();
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    default:
+      break;
+  }
+
+  
+
+
 }
