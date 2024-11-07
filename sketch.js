@@ -48,7 +48,26 @@ function draw() {
       break;
   }
 
-  
+    background(146, 216, 212);
+    textSize(100);
+    textAlign(CENTER);
+    textFont('PL Benguiat Frisky');
+    textStyle(BOLD);
+    fill(208,172,100);
+    text('Luans problem solver',w / 2, h / 3);
+
+    textSize(100);
+    textAlign(CENTER);
+    textFont('PL Benguiat Frisky');
+    textStyle(BOLD);
+    fill('white');
+    text('Luans problem solver',w / 2 - 10, h / 3 - 10);
+
+    stroke('white');
+    rect(w/2, h/2 + -60, 1/4 * w, 65);
+    rect(w/2, h/2 + 20, 1/4 * w, 65);
+    rect(w/2, h/2 + 100, 1/4 * w, 65);
+
 
 
 }
