@@ -3,22 +3,11 @@ let h, w;
 let backgroundColor = [146, 216, 212]
 let strokeColor = [215, 172, 99]
 
-function drawHomePage(){
-
-}
-
-function drawPage2(){
-
-}
-
-function drawPage3(){
-
-}
-
 function setup() {
   h = windowHeight, w = windowWidth;
   createCanvas(w, h);
 
+  setUpHomeButtonIcon();
   setupHomePage();
   setupPage1();
   setupPage2();
@@ -30,6 +19,7 @@ let pageNumber = 0;
 
 function draw() {
   background(backgroundColor[0], backgroundColor[1], backgroundColor[2]);
+  console.log(pageNumber);
   switch(pageNumber){
     case 0:
       drawHomePage();
@@ -47,27 +37,4 @@ function draw() {
       drawHomePage();
       break;
   }
-
-    background(146, 216, 212);
-    textSize(100);
-    textAlign(CENTER);
-    textFont('PL Benguiat Frisky');
-    textStyle(BOLD);
-    fill(208,172,100);
-    text('Luans problem solver',w / 2, h / 3);
-
-    textSize(100);
-    textAlign(CENTER);
-    textFont('PL Benguiat Frisky');
-    textStyle(BOLD);
-    fill('white');
-    text('Luans problem solver',w / 2 - 10, h / 3 - 10);
-
-    stroke('white');
-    rect(w/2, h/2 + -60, 1/4 * w, 65);
-    rect(w/2, h/2 + 20, 1/4 * w, 65);
-    rect(w/2, h/2 + 100, 1/4 * w, 65);
-
-
-
 }

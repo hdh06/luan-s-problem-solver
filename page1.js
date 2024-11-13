@@ -180,4 +180,6 @@ function drawPage1(){
           shapes[i].color = "white";
       }
   }
+
+  backHomeButton.draw();
 }
