@@ -20,6 +20,7 @@ let pageNumber = 2;
 function draw() {
   background(backgroundColor[0], backgroundColor[1], backgroundColor[2]);
   console.log(pageNumber);
+  endPage2();
   switch(pageNumber){
     case 0:
       drawHomePage();
