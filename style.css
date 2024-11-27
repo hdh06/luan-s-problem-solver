@@ -15,3 +15,23 @@ canvas {
   font-size: xx-large;
   font-family: "PL Benguiat Frisky";
 }
+
+#Box_OK{
+  width: 100px;
+  height: 100px;
+  border: 3px solid #D7AC63;
+  background-color: green;
+  text-align: center;
+  font-size: xx-large;
+  font-family: "PL Benguiat Frisky";
+}
+
+#Box_WA{
+  width: 100px;
+  height: 100px;
+  border: 3px solid #D7AC63;
+  background-color: red;
+  text-align: center;
+  font-size: xx-large;
+  font-family: "PL Benguiat Frisky";
+}

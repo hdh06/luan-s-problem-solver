@@ -54,6 +54,10 @@ class answerBox{
         this.box.hide();
     }
 
+    setId(Id){
+        this.box.id(Id);
+    }
+
     show(){
         this.box.show();
     }
@@ -83,9 +87,12 @@ class answerForm{
 
     check(){
         // console.log(this.box.Value(), iconCount[this.icon.type], this.icon.type);
-        if (this.box.Value() == iconCount[this.icon.type]){
-            
-            text("OK", 100, 100);
+        if (this.box.Value() == ""){
+            this.box.setId("Box");
+        }else if (this.box.Value() == iconCount[this.icon.type]){
+            this.box.setId("Box_OK");
+        }else{
+            this.box.setId("Box_WA");
         }
     }
 
