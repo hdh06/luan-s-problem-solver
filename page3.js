@@ -1,4 +1,4 @@
-let rects = [];
+let cards = [];
 let oders = [1,2,3,4,5,6,1,2,3,4,5,6];
 
 function setupPage3(){
@@ -18,18 +18,22 @@ function setupPage3(){
     console.log(oders);
 
     for (let i = 0; i < 2; i++){
-        rects[i] = [];
+        cards[i] = [];
         for (let j = 0; j < 6; j++){
             if (i == 0){
-                rects[i][j] = new Rect(borderW + disW / 2 + j * disW, borderH + disH / 2 + disH * i, boxWidth, boxHeight,shape,oders[j]);
+                cards[i][j] = new Card(borderW + disW / 2 + j * disW, borderH + disH / 2 + disH * i, boxWidth, boxHeight,shape,oders[j],false);
             } else {
-                rects[i][j] = new Rect(borderW + disW / 2 + j * disW, borderH + disH / 2 + disH * i, boxWidth, boxHeight,shape,oders[j + 6]);
+                cards[i][j] = new Card(borderW + disW / 2 + j * disW, borderH + disH / 2 + disH * i, boxWidth, boxHeight,shape,oders[j + 6],false);
             }            
         }
     }
     
 
 }
+
+selected = [];
+timeDelayed = 2;
+timeRecord = -1;
 
 function drawPage3(){
     backHomeButton.draw();
@@ -47,24 +51,43 @@ function drawPage3(){
     fill(215,172,99);
     textAlign(CENTER, TOP);
     text("Match the shapes", w/2, 30);
-    
+
     for (let i = 0; i < 2; i++){
         for (let j = 0; j < 6; j++){
-            rects[i][j].draw();
+            cards[i][j].draw();
         }
     }
+    if (isMouseClicked){
+        isMouseClicked = false;
+    }
 
- 
+    if (selected.length == 2 && timeRecord == -1){
+        timeRecord = second();
+    }
+
+    if (selected.length == 2 && timeRecord != -1 && second() - timeRecord == timeDelayed){
+        if (selected[0].type == selected[1].type){
+            selected[0].canBeFlip = false;
+            selected[1].canBeFlip = false;
+        }else{
+            selected[0].fliped();
+            selected[1].fliped();
+        }
+        selected = [];
+        timeRecord = -1;
+    }
 }
 
-class Rect {
-    constructor(x,y,wid,hei,shape,type){
+class Card {
+    constructor(x,y,wid,hei,shape,type,state){
         this.x = x;
         this.y = y;
         this.hei = hei;
         this.wid = wid;
         this.shape = shape;
         this.type = type;
+        this.state = state;
+        this.canBeFlip = true;
     }
 
     drawRectangleAtCenter(x,y,wid,hei){
@@ -196,10 +219,15 @@ class Rect {
         noStroke();
     }
 
-    draw(){
 
-        this.drawBox(this.x, this.y, this.wid, this.hei);
-        if(dist(this.x,this.y,mouseX,mouseY) < this.wid){
+    isInside(x,y){
+        return (this.x - this.wid / 2 <= x && x <= this.x + this.wid/2 && this.y - this.hei / 2 <= y && y <= this.y + this.hei/2); 
+    }
+
+    draw(){
+        if (!this.state)
+            this.drawBox(this.x, this.y, this.wid, this.hei);
+        else {
             switch(this.type){
                 case 1:
                     this.drawXInBox(this.x, this.y, this.wid, this.hei);
@@ -223,6 +251,18 @@ class Rect {
                     break;
             }
         }
+
+        if (selected.length < 2 && this.canBeFlip && isMouseClicked && this.isInside(mouseX,mouseY))
+            this.fliped();
+    }
+
+    fliped() {
+        if(this.state == true){
+            this.state = false;
+        } else {
+            this.state = true;
+        }
+        selected.push(this);
     }
 }
 

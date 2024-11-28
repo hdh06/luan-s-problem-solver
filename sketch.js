@@ -39,3 +39,13 @@ function draw() {
       break;
   }
 }
+
+isMouseClicked = false;
+
+function mouseClicked() {
+  if (pageNumber == 3){
+    isMouseClicked = true;
+  }
+
+
+}
