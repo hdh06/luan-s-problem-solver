@@ -50,7 +50,7 @@ function drawPage3(){
     textFont('Verdana');
     fill(215,172,99);
     textAlign(CENTER, TOP);
-    text("Match the shapes", w/2, 30);
+    text("Match the cards", w/2, 30);
 
     for (let i = 0; i < 2; i++){
         for (let j = 0; j < 6; j++){
