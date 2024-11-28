@@ -66,7 +66,7 @@ function drawPage3(){
     }
 
     if (selected.length == 2 && timeRecord != -1 && second() - timeRecord == timeDelayed){
-        if (selected[0].type == selected[1].type){
+        if (selected[0].type == selected[1].type && selected[0].x != selected[1].x){
             selected[0].canBeFlip = false;
             selected[1].canBeFlip = false;
         }else{
