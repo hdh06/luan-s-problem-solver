@@ -14,7 +14,7 @@ function setup() {
   setupPage3();
 }
 
-let pageNumber = 3;
+let pageNumber = 0;
 // x = 100, y = 100
 
 function draw() {
