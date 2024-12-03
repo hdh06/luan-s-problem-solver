@@ -32,7 +32,7 @@ function setupPage3(){
 }
 
 selected = [];
-timeDelayed = 2;
+timeDelayed = 1000;
 timeRecord = -1;
 
 function drawPage3(){
@@ -61,12 +61,14 @@ function drawPage3(){
         isMouseClicked = false;
     }
 
-    if (selected.length == 2 && timeRecord == -1){
-        timeRecord = second();
-    }
+    // if (selected.length == 2){
+    //     console.log(selected[0].type, selected[1].type);
+    // }
 
-    if (selected.length == 2 && timeRecord != -1 && second() - timeRecord == timeDelayed){
-        if (selected[0].type == selected[1].type && selected[0].x != selected[1].x){
+    if (selected.length == 2 && timeRecord == -1){
+        timeRecord = millis();
+    }else if (selected.length == 2 && timeRecord != -1 && abs(millis() - timeRecord - timeDelayed) < 100){
+        if (selected[0].type == selected[1].type && (selected[0].x != selected[1].x || selected[0].y != selected[1].y)){
             selected[0].canBeFlip = false;
             selected[1].canBeFlip = false;
         }else{
@@ -88,6 +90,8 @@ class Card {
         this.type = type;
         this.state = state;
         this.canBeFlip = true;
+        this.currentlyInside = false;
+        this.increaseSizeValue = 10;
     }
 
     drawRectangleAtCenter(x,y,wid,hei){
@@ -225,6 +229,17 @@ class Card {
     }
 
     draw(){
+        if (!this.currentlyInside && this.isInside(mouseX,mouseY) && !this.state){
+            this.wid += this.increaseSizeValue;
+            this.hei += this.increaseSizeValue;
+            this.currentlyInside = true;
+        }
+        if (this.currentlyInside && !this.isInside(mouseX, mouseY)){
+            this.wid -= this.increaseSizeValue;
+            this.hei -= this.increaseSizeValue;
+            this.currentlyInside = false;
+        }
+
         if (!this.state)
             this.drawBox(this.x, this.y, this.wid, this.hei);
         else {
